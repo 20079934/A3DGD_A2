@@ -42,6 +42,11 @@ public class LauncherManager : MonoBehaviour
     [SerializeField]
     Image BG;
 
+    /// private variables
+    bool loginSwitch = true;
+
+
+
     private void Start()
     {
         incorrect.gameObject.SetActive(false);
@@ -71,31 +76,34 @@ public class LauncherManager : MonoBehaviour
     /// </summary>
     public void signIn()
     {
-        dbAuth(true);
+        loginSwitch = true;
+        StartCoroutine("dbAuth");
     }
 
     public void signUp()
     {
-        dbAuth(false);
+        loginSwitch = false;
+        StartCoroutine("dbAuth");
     }
 
-    public void dbAuth(bool login)
+    public IEnumerator dbAuth()
     {
+        bool login = loginSwitch;
         if (username.text == "")
         {
             incorrect.gameObject.SetActive(true);
             incorrect.text = "Please enter a username";
-            return;
+            StopCoroutine("dbAuth");
         }
         else if (password.text == "")
         {
             incorrect.gameObject.SetActive(true);
             incorrect.text = "Please enter a password";
-            return;
+            StopCoroutine("dbAuth");
         }
         if (login)
         {
-            GameManager.player = Database.SignIn(username.text, password.text);
+            yield return Database.SignIn(username.text, password.text);
             if (GameManager.player == null)
             {
                 incorrect.gameObject.SetActive(true);
@@ -106,9 +114,11 @@ public class LauncherManager : MonoBehaviour
         }
         else
         {
-            if(Database.SignUp(username.text, password.text))
+            yield return Database.SignUp(username.text, password.text);
+            if (Database.state == "suc")
             {
-                dbAuth(true);
+                loginSwitch = true;
+                yield return StartCoroutine("dbAuth");
             }
             else
             {
