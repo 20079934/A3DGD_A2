@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class Player0 : MonoBehaviour
 {
     int score = 0;
+    TextMeshProUGUI scoretxt;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        scoretxt = GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
+        scoretxt.text = $"Score {score}/4";
     }
 
     // Update is called once per frame
@@ -52,6 +54,7 @@ public class Player0 : MonoBehaviour
                 {
                     FindObjectOfType<GameManager>().nextLevel();
                 }
+                scoretxt.text = $"Score: {score}/4";
                 break;
             default:
                 break;
