@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Planet : MonoBehaviour
+public class Satellite : MonoBehaviour
 {
     float rotationalSpeed = 10f;
     float orbitalSpeed = .2f;
@@ -10,28 +10,12 @@ public class Planet : MonoBehaviour
     GameObject sun;
     private Color c1 = Color.blue;
     private int lenghthOfLineRenderer = 100;
-    void DrawOrbit()
-    {
-        LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
-        lineRenderer.SetColors(c1, c1);
-        lineRenderer.SetWidth(1.0f, 1.0f);
-        lineRenderer.SetVertexCount(lenghthOfLineRenderer + 1);
-        int i = 0;
-        while (i <= lenghthOfLineRenderer)
-        {
-            float unityAngle = (float)(2 * 3.14) / lenghthOfLineRenderer;
-            float currentAngle = (float)unityAngle * i;
-            Vector3 pos = new Vector3(distanceToSun * Mathf.Cos(currentAngle), 0, distanceToSun * Mathf.Sin(currentAngle));
-            lineRenderer.SetPosition(i, pos);
-            i++;
-        }
-    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        DrawOrbit();
-        sun = GameObject.Find("Sun");
+        sun = GetComponentInParent<Transform>().gameObject;
         transform.position = new Vector3(distanceToSun, 0, distanceToSun);
     }
     // Update is called once per frame
