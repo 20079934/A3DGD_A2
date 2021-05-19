@@ -24,4 +24,10 @@ public class PlayerData
         return score;
     }
 
+    public IEnumerator resetScore()
+    {
+        score = 0;
+        yield return Database.updatePlayer(name, score);
+    }
+
 }

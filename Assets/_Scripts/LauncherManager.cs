@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LauncherManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class LauncherManager : MonoBehaviour
     GameObject authScreen;
     [SerializeField]
     GameObject gameScreen;
+    [SerializeField]
+    GameObject newGame;
+    [SerializeField]
+    GameObject continueGame;
+
 
     [Header("Auth Accessors")]
     /// <summary>
@@ -68,6 +74,17 @@ public class LauncherManager : MonoBehaviour
         {
             welcome.text = $"Welcome {GameManager.player.getName()}";
             score.text = $"Your score: {GameManager.player.getScore()}";
+            GameManager.currentLevel = PlayerPrefs.GetInt("currentLevel");
+            if(GameManager.currentLevel == 0)
+            {
+                newGame.SetActive(true);
+                continueGame.SetActive(false);
+            }
+            else
+            {
+                newGame.SetActive(false);
+                continueGame.SetActive(true);
+            }
         }
     }
 
@@ -144,5 +161,23 @@ public class LauncherManager : MonoBehaviour
 
 
         DMButton.text = (on ? "not " : "") + "Dark Mode";
+    }
+
+    public void loadCurrentLevel()
+    {
+        SceneManager.LoadScene($"Level{GameManager.currentLevel}");
+    }
+
+    public void startNewGame()
+    {
+        GameManager.currentLevel = 0;
+        StartCoroutine("resetPlayerScore");
+        PlayerPrefs.SetInt("currentLevel", GameManager.currentLevel);
+        SceneManager.LoadScene("Level0");
+    }
+
+    IEnumerator resetPlayerScore()
+    {
+        yield return GameManager.player.resetScore();
     }
 }

@@ -33,4 +33,13 @@ public class Database : MonoBehaviour
 
         state = www.text;
     }
+
+    public static IEnumerator updatePlayer(string user, int score)
+    {
+        string update = $"https://pulseless-electrici.000webhostapp.com/update.php?user={user}&score={score}";
+        WWW www = new WWW(update);
+        yield return www;
+
+        state = www.text;
+    }
 }
