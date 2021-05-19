@@ -30,4 +30,9 @@ public class PlayerData
         yield return Database.updatePlayer(name, score);
     }
 
+    public void setScore(int scr)
+    {
+        score = scr;
+    }
+
 }

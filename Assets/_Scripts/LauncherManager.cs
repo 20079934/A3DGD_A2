@@ -58,7 +58,8 @@ public class LauncherManager : MonoBehaviour
         incorrect.gameObject.SetActive(false);
         modifyDarkMode(darkmode);
         authSignedIn(GameManager.player != null);
-    
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>
@@ -75,7 +76,7 @@ public class LauncherManager : MonoBehaviour
             welcome.text = $"Welcome {GameManager.player.getName()}";
             score.text = $"Your score: {GameManager.player.getScore()}";
             GameManager.currentLevel = PlayerPrefs.GetInt("currentLevel");
-            if(GameManager.currentLevel == 0)
+            if(GameManager.currentLevel == 0 || GameManager.currentLevel == 4)
             {
                 newGame.SetActive(true);
                 continueGame.SetActive(false);
